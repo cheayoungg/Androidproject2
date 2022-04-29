@@ -1,0 +1,74 @@
+package com.example.androinproject2;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        /* ViewPager2 에 FragmentAdapter 연결
+           ArrayList <Fragment> fraglist;
+           fraglist = new ArrayList<Fragment>();
+
+           int num_page=0; //페이지 개수
+
+        *   ViewPager2 vpPager = findViewById(R.id.vpPager);
+
+            vpPager.setCurrentItem(1000);//시작점 1000 으로 지정, 초기페이지??
+
+             // 화면 전환 할때마다 fragment count 추가, 오른쪽 스왑은 다음달, 왼쪽은 이전달
+            vpPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+             @Override
+             public void onPageSelected(int position) {
+                     num_page+=1;
+
+    }
+});
+           // count는 fragment 갯수
+           FragmentStateAdapter adapter = new MonthViewAdapter(this,count);
+
+           vpPager.setAdapter(adapter);
+        *
+        * */
+
+        /* FragmentMonth class 에서 받아온 날짜로 설정
+       TextView year_month = monthView.findViewById(R.id.textView_date);
+        year_month.setText(now_year + "년" + now_month + "월");  //텍스트에 뿌리기*/
+    }
+
+    // 오버플로우 화면전환
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.month:
+                MonthFragment monthFragment = new MonthFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.month_fragment,monthFragment).commit();
+                return true;
+            case R.id.week:
+                WeekFragment weekFragment = new WeekFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.week_fragment,weekFragment).commit();
+
+                //Toast.makeText(getApplicationContext(),"week",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+}
