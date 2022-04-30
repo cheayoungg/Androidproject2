@@ -6,21 +6,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp">
-
-        <TextView
-            android:id="@+id/textView_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:textSize="20sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="#8BC34A">
 
@@ -89,23 +74,11 @@
 
     </LinearLayout>
 
-    <fragment
-        android:name="com.example.androinproject2.MonthFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/month_fragment"
-        />
-    <fragment
-        android:name="com.example.androinproject2.WeekFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/week_fragment"
-        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>
