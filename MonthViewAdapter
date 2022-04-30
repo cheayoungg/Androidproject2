@@ -1,6 +1,5 @@
-package com.example.androinproject2;
+package com.example.project2_test1;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -8,25 +7,50 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 public class MonthViewAdapter extends FragmentStateAdapter {
     public int mCount;
 
-    public MonthViewAdapter(@NonNull FragmentActivity fa,int count) {
+    public MonthViewAdapter(FragmentActivity fa,int count) {
         super(fa);
         mCount=count;
     }
 
-    @NonNull
+    // 각 페이지를 나타내는 프래그먼트 반환
     @Override
     public Fragment createFragment(int position) {
-        int index=getRealPosition(position);
+        //int index = getRealPosition(position);
+        int n;
 
-        MonthFragment month = new MonthFragment();
-        return month;
+        if(position==50){
+            MonthFragment month = new MonthFragment(2022,4);
+            return month;
+        }
+        else if(position<50){
+            n=50-position;
+            if((4-n)<0){
+                MonthFragment month = new MonthFragment(2021,1);
+                return month;
+            }
+            MonthFragment month = new MonthFragment(2022,4-n);
+            return month;
+        }
+        else if(position>50){
+            n=position-50;
+            if((n+4)>12){
+                MonthFragment month = new MonthFragment(2023,1);
+                return month;
+            }
+            MonthFragment month = new MonthFragment(2022,4+n);
+            return month;
+        }
+        else return null;
     }
 
+    // 전체 페이지 개수 반환
     @Override
     public int getItemCount() {
-        //num
-        return mCount;
+        return 100;
     }
-   //페이지 개수 계산
-   public int getRealPosition(int position) { return position % mCount; }
+
+   // public int getRealPosition(int position) { return position % mCount; }
+
 }
+
+
