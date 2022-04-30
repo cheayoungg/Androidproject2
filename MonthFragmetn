@@ -1,3 +1,5 @@
+package com.example.project2_test1;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,7 @@ import java.util.Calendar;
 public class MonthFragment extends Fragment {
     Calendar cal;
     ArrayList<String> dayList;
+    GridAdapter gridAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,8 +33,15 @@ public class MonthFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MonthFragment() {
+    int now_year;
+    int now_month;
+
+    public MonthFragment(){}
+
+    public MonthFragment(int year, int month) {
         // Required empty public constructor
+        now_year=year;
+        now_month=month;
     }
 
     /**
@@ -65,21 +75,19 @@ public class MonthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       View monthView= inflater.inflate(R.layout.fragment_month, container, false);
-       // 그리드뷰 객체 얻어옴
-       GridView gridView = monthView.findViewById(R.id.gridview);
-
-       /* FragmentMonth fragmonth = new Fragment();
-       fragmonth.setCalender(monthView,now_year, now_month);,
-       return monthView;*/
-
-       dayList=new ArrayList<String>();
+        View monthView= inflater.inflate(R.layout.fragment_month, container, false);
+        // 그리드뷰 객체 얻어옴
+        GridView gridView = monthView.findViewById(R.id.gridview);
+        dayList=new ArrayList<String>();
 
         cal = Calendar.getInstance();
 
-        int now_year = Calendar.getInstance().get(Calendar.YEAR);
-        int now_month = Calendar.getInstance().get(Calendar.MONTH)+1;
-        int day = Calendar.getInstance().get(Calendar.DATE);
+      /*  now_year = Calendar.getInstance().get(Calendar.YEAR);
+        now_month = Calendar.getInstance().get(Calendar.MONTH)+1;
+        int day = Calendar.getInstance().get(Calendar.DATE); */
+
+        //TextView year_month = monthView.findViewById(R.id.textView_date);
+        //year_month.setText(now_year + "년" + now_month + "월"); // 텍스트에 뿌리기
 
 
         cal.set(now_year, now_month-1, 1); //이번달 1일 set
@@ -90,12 +98,19 @@ public class MonthFragment extends Fragment {
         }
 //현재 월에 끝일 구하기
         setCalDate(cal.get(Calendar.MONTH) + 1);
+//6행 맞추기위한 공백채우기
+        for(int i=0;i <45-dayList.size(); i++){ // 6행7열 (42)- 리스트항목 개수 빼면..
+            dayList.add("");
+        }
+        /*gridView.setAdapter(
+                new ArrayAdapter<String>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_activated_1,
+                        dayList )); */
 
-        gridView.setAdapter(
-               new ArrayAdapter<String>(
-                       getActivity(),
-                       android.R.layout.simple_list_item_activated_1,
-                       dayList ));
+//어댑터 연결
+        gridAdapter = new GridAdapter(getActivity(), dayList);
+        gridView.setAdapter(gridAdapter); // 어댑터를 그리스뷰 객체에 연결
 
 
         return monthView;
