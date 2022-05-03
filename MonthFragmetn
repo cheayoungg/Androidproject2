@@ -1,5 +1,6 @@
 package com.example.project2_test1;
 
+import android.app.ActionBar;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 
@@ -27,40 +28,28 @@ public class MonthFragment extends Fragment {
     ArrayList<String> dayList;
     GridAdapter gridAdapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mParam1;
+    private int mParam2;
 
-    int now_year;
-    int now_month;
+    int year;
+    int month;
 
     public MonthFragment(){}
 
-    public MonthFragment(int year, int month) {
+    /*public MonthFragment(int year, int month) {
         // Required empty public constructor
         now_year=year;
         now_month=month;
-    }
+    } */
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MonthFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MonthFragment newInstance(String param1, String param2) {
+    public static MonthFragment newInstance(int year, int month) {
         MonthFragment fragment = new MonthFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, year);
+        args.putInt(ARG_PARAM2, month);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,8 +58,8 @@ public class MonthFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getInt(ARG_PARAM1);
+            mParam2 = getArguments().getInt(ARG_PARAM2);
         }
     }
 
@@ -82,7 +71,6 @@ public class MonthFragment extends Fragment {
         // 그리드뷰 객체 얻어옴
         GridView gridView = monthView.findViewById(R.id.gridview);
         dayList=new ArrayList<String>();
-
         cal = Calendar.getInstance();
 
       /*  now_year = Calendar.getInstance().get(Calendar.YEAR);
@@ -92,8 +80,10 @@ public class MonthFragment extends Fragment {
         //TextView year_month = monthView.findViewById(R.id.textView_date);
         //year_month.setText(now_year + "년" + now_month + "월"); // 텍스트에 뿌리기
 
+//파라미터에 저장된 값을 넣어 cal설정
+        cal.set(Integer.parseInt(String.valueOf(mParam1)), Integer.parseInt(String.valueOf(mParam2))-1, 1);
 
-        cal.set(now_year, now_month-1, 1); //이번달 1일 set
+        //cal.set(year, month-1, 1); //이번달 1일 set
         int startday = cal.get(Calendar.DAY_OF_WEEK); //1일의 요일
 // 1일 전 요일들에 공백채우기
         for (int i = 1; i < startday; i++) {
@@ -102,7 +92,7 @@ public class MonthFragment extends Fragment {
 //현재 월에 끝일 구하기
         setCalDate(cal.get(Calendar.MONTH) + 1);
 //6행 맞추기위한 공백채우기
-        for(int i=0;i <45-dayList.size(); i++){ // 6행7열 (42)- 리스트항목 개수 빼면..
+        for(int i=dayList.size();i<42; i++){ // 6행7열 (42)- 리스트항목 개수 빼면..
             dayList.add("");
         }
         /*gridView.setAdapter(
@@ -120,13 +110,19 @@ public class MonthFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getActivity(),
-                        now_year+"/"+now_month+"/"+dayList.get(i),Toast.LENGTH_SHORT).show();
+                        mParam1+"/"+mParam2+"/"+dayList.get(i),Toast.LENGTH_SHORT).show();
                // gridView.setSelector(new PaintDrawable(0xffff0000));
             }
         });
 
-//앱바에 날짜 세팅
+/*/격자 세팅
+        // 그리드뷰로 화면을 꽉 채우기 위해, 날짜를 출력할 TextView의 높이를 그리드뷰의 높이 / 6으로 설정
 
+        int gridviewH = gridView.getHeight() / 6;
+        // 그리드뷰가 커져서 화면을 넘어가 스크롤바가 생기지 않도록 하기 위해 -2를 해줌
+        View gridItemView= inflater.inflate(R.layout.gridview_item, container, false);
+        TextView tv = gridItemView.findViewById(R.id.tv_item_gridview);
+        tv.setHeight(gridviewH-2); */
 
         return monthView;
     }
@@ -135,7 +131,7 @@ public class MonthFragment extends Fragment {
         cal.set(Calendar.MONTH, now_month - 1);
 
         for (int i = 0; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-            dayList.add("" + (i + 1));
+            dayList.add(String.valueOf(i+1));
         }
     }
 }
